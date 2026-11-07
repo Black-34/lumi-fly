@@ -367,7 +367,8 @@ c_gb:["United Kingdom","Großbritannien","Birleşik Krallık"],c_jp:["Japan","Ja
 function T(k,...a){const e=TX[k];const r=e?(e[{en:0,de:1,tr:2}[LANG]]||e[0]):k;return r.replace(/\{(\d)\}/g,(_,i)=>a[i])}
 const EUR=v=>{try{return new Intl.NumberFormat(LANG==="en"?"en-IE":LANG==="tr"?"tr-TR":"de-DE",{style:"currency",currency:"EUR"}).format(v)}catch(e){return "€"+v}};
 const cv=document.getElementById("c"),ctx=cv.getContext("2d",{alpha:false});
-const W=360,H=600,GR=70,BX=96;let PW=58,BR=11;
+/* Height follows the phone screen (no bars top/bottom): 600 up to 820 */
+const W=360,H=Math.round(Math.min(820,Math.max(600,360*(innerHeight||600)/(innerWidth||360)))),GR=70,BX=96;let PW=58,BR=11;
 const dpr=Math.min(2,window.devicePixelRatio||1);cv.width=W*dpr;cv.height=H*dpr;ctx.scale(dpr,dpr);
 const MODES={
 kinder:{n:T("m_kinder"),gap:280,sp:1.3,max:1.8,g:.27,fl:-5.4,space:270,pw:92,S:1.7,bounce:true,sr:22,sky:["#ffc4ec","#ffe9b8","#c6f3ff"],hill:"#b8eaa8",g1:"#ffe3a8",g2:"#7fdc7a",g3:"#ffc98a",cl:"rgba(255,255,255,.9)"},
