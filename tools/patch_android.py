@@ -57,7 +57,7 @@ edit(glob.glob(f'{A}/src/main/java/**/MainActivity.java', recursive=True)[0], la
     'public class MainActivity extends BridgeActivity {}',
     'public class MainActivity extends BridgeActivity {\n    @Override\n    public void onCreate(android.os.Bundle savedInstanceState) {\n        registerPlugin(LeaderboardPlugin.class);\n        super.onCreate(savedInstanceState);\n    }\n}'))
 edit(f'{A}/build.gradle', lambda s: s.replace("    implementation project(':capacitor-android')",
-    "    implementation project(':capacitor-android')\n    implementation 'com.google.android.gms:play-games-v2:20.1.2'", 1))
+    "    implementation project(':capacitor-android')\n    implementation 'com.google.android.gms:play-services-games-v2:20.1.2'", 1))
 if PLAY_GAMES_APP_ID:
     edit(f'{A}/src/main/res/values/strings.xml', lambda s: s.replace('</resources>', f'    <string name="game_services_project_id" translatable="false">{PLAY_GAMES_APP_ID}</string>\n</resources>'))
     edit(f'{A}/src/main/AndroidManifest.xml', lambda s: re.sub(r'(<application\b[^>]*>)', r'\1\n        <meta-data android:name="com.google.android.gms.games.APP_ID" android:value="@string/game_services_project_id" />', s, count=1))
