@@ -1,6 +1,6 @@
 node_modules/
-android/
-ios/
+/android/
+/ios/
 www/capacitor.js
 www/fonts/
 out/
