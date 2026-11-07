@@ -67,7 +67,15 @@
   function ad(cb, inter) {
     if (busy) return;
     if (inter) {
-      if (!interLoaded) { loadInter(); cb(); return }
+      if (!interLoaded) {                                   // ad still loading: wait up to 4 s, then show it
+        loadInter(); busy = true; var waited = 0;
+        var iv = setInterval(function () {
+          waited += 200;
+          if (interLoaded) { clearInterval(iv); onInterEnd = cb; AdMob.showInterstitial().catch(function () { busy = false; onInterEnd = null; cb() }) }
+          else if (waited >= 4000) { clearInterval(iv); busy = false; cb() }
+        }, 200);
+        return;
+      }
       busy = true; onInterEnd = cb; AdMob.showInterstitial().catch(function () { busy = false; onInterEnd = null; cb() });
     } else {
       if (!rewardLoaded) { loadReward(); say(L('No video available right now. Try again in a moment.', 'Gerade kein Video verfügbar. Versuch es gleich nochmal.', 'Şu an video yok. Birazdan tekrar dene.')); return }
