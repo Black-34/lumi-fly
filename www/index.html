@@ -974,7 +974,7 @@ dn.addEventListener("click",()=>{night=!night;try{localStorage.setItem("lf4-nigh
 function toMenu(){dnUI();vbUI();spUI();coinUI();reset();st="menu";document.getElementById("start").hidden=false;document.getElementById("menuBtn").hidden=true;skins();setupC(bigc);setupC(platc);showBest();fit()}
 /* Ads: the first play after opening the app is ad-free. Every later Play from the menu starts with an ad (not in Kids mode, not with Remove ads / Lumi Pass). */
 let plays=0,lastAd=-1e9;const AD_GAP=60000;/* at least 60 s between two full-screen ads */
-document.getElementById("play").addEventListener("click",()=>{const go=()=>{document.getElementById("start").hidden=true;document.getElementById("menuBtn").hidden=false;reset();st="ready";fit()};plays++;if(plays>1&&!noAds()&&!kid()&&performance.now()-lastAd>3000){lastAd=performance.now();overs=0;adDlg(go,true)}else go()});
+document.getElementById("play").addEventListener("click",()=>{const go=()=>{document.getElementById("start").hidden=true;document.getElementById("menuBtn").hidden=false;reset();st="ready";fit()};plays++;if(plays>1&&!noAds()&&!kid()&&performance.now()-lastAd>30000){lastAd=performance.now();overs=0;adDlg(go,true)}else go()});
 document.getElementById("menuBtn").addEventListener("click",toMenu);
 addEventListener("resize",()=>{fit();skins();setupC(bigc);setupC(platc)});
 
@@ -1160,8 +1160,8 @@ function adDlg(cb,inter){if(window.Native){Native.ad(cb,inter);return}
     if(b.id==="dOk"&&n<=0){clearInterval(iv);closeDlg();cb()}
     if(b.id==="dNo"){clearInterval(iv);closeDlg();cb();openStore()}};
 }
-/* Only the very first round after opening the app is ad-free. Every new round after that starts with an ad (not in Kids mode, not with Remove ads / Lumi Pass). */
-function interAd(){if(noAds()||kid())return false;lastAd=performance.now();adDlg(()=>{reset();st="ready"},true);return true}
+/* Ad after every 3rd round, at least 30 s apart (not in Kids mode, not with Remove ads / Lumi Pass). */
+function interAd(){overs++;if(noAds()||kid()||overs<3||performance.now()-lastAd<30000)return false;overs=0;lastAd=performance.now();adDlg(()=>{reset();st="ready"},true);return true}
 const cX2=$("cX2");
 cX2.addEventListener("click",()=>{if(st!=="over"||rv.x2||!got)return;adDlg(()=>{rv.x2=true;const g=got*(passOn()?2:1);coins+=g;saveFit();coinUI();sfx("coin");toast("+"+g+" ★")},false)});
 
