@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      HAS_KEY: ${{ secrets.LF_KEYSTORE_B64 != '' }}
+      HAS_KEY: ${{ secrets.LF_KS_PASS != '' }}
     timeout-minutes: 40
     steps:
       - uses: actions/checkout@v6
@@ -39,15 +39,14 @@ jobs:
       - name: Test APK (install directly on your phone)
         run: cd android && ./gradlew --no-daemon assembleDebug
 
-      - name: Store bundle (.aab, only when the upload key is set up)
+      - name: Store bundle (.aab for Google Play, only when the key password is set up)
         if: ${{ env.HAS_KEY == 'true' }}
         env:
           LF_KS_PASS: ${{ secrets.LF_KS_PASS }}
-          LF_KEY_ALIAS: ${{ secrets.LF_KEY_ALIAS }}
-          LF_KEY_PASS: ${{ secrets.LF_KEY_PASS }}
+          LF_KEY_PASS: ${{ secrets.LF_KS_PASS }}
+          LF_KEY_ALIAS: lumifly
         run: |
-          echo "${{ secrets.LF_KEYSTORE_B64 }}" | base64 -d > $RUNNER_TEMP/upload.jks
-          export LF_KEYSTORE=$RUNNER_TEMP/upload.jks
+          export LF_KEYSTORE=$GITHUB_WORKSPACE/keys/upload.jks
           cd android && ./gradlew --no-daemon bundleRelease
 
       - name: Rename
@@ -65,5 +64,5 @@ jobs:
           tag_name: test-${{ github.run_number }}
           name: Lumi Fly Test ${{ github.run_number }}
           prerelease: true
-          files: out/*.apk
+          files: out/*
           body: "Test-APK zum direkten Installieren auf dem Handy."

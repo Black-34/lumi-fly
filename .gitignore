@@ -6,3 +6,4 @@ www/fonts/
 out/
 *.jks
 *.keystore
+!keys/upload.jks

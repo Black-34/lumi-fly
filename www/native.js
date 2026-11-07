@@ -15,8 +15,8 @@
     // Your own AdMob ad unit IDs (from admob.google.com). Leave empty while testAds is true.
     android: { inter: '', reward: '' },
     ios: { inter: '', reward: '' },
-    privacyUrl: 'https://black-34.github.io/lumifly-legal/privacy.html',
-    imprintUrl: 'https://black-34.github.io/lumifly-legal/imprint.html',
+    privacyUrl: 'https://black-34.github.io/gfe-privacy/lumifly/',
+    imprintUrl: 'https://black-34.github.io/gfe-privacy/lumifly/#contact',
     termsUrl: 'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/'
   };
   var TEST = IOS
