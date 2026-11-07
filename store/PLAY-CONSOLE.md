@@ -14,9 +14,10 @@ Fly with Lumi, the little rainbow bird, on a journey around the world!
 
 Tap to flap, glide through the gaps and collect shining stars. Every country has its own landmarks, colors and music – from the Eiffel Tower in Paris to the mosques of Istanbul.
 
-★ 4 levels: Kids, Easy, Medium and Hard – fun for the whole family
+★ 4 difficulty levels – from relaxed to really hard
 ★ 15 countries to unlock on your world tour
-★ Two worlds: classic pillars and floating balloon houses
+★ Fly between floating balloon houses past famous landmarks
+★ Online leaderboards: Top 500 and your own rank
 ★ Dress up Lumi: sunglasses, pirate patch, crown, robot and more
 ★ Power-ups: Ghost, Slow-mo and Heart
 ★ Daily rewards and missions
@@ -32,9 +33,10 @@ Flieg mit Lumi, dem kleinen Regenbogenvogel, einmal um die ganze Welt!
 
 Tippe zum Flattern, gleite durch die Lücken und sammle funkelnde Sterne. Jedes Land hat eigene Sehenswürdigkeiten, Farben und Musik – vom Eiffelturm in Paris bis zu den Moscheen von Istanbul.
 
-★ 4 Stufen: Kinder, Leicht, Mittel und Schwer – Spaß für die ganze Familie
+★ 4 Schwierigkeitsstufen – von entspannt bis richtig schwer
 ★ 15 Länder auf deiner Weltreise freischalten
-★ Zwei Welten: klassische Säulen und schwebende Ballonhäuser
+★ Flieg zwischen schwebenden Ballonhäusern an berühmten Wahrzeichen vorbei
+★ Online-Bestenlisten: Top 500 und dein eigener Platz
 ★ Zieh Lumi an: Sonnenbrille, Piratenklappe, Krone, Roboter und mehr
 ★ Power-ups: Geist, Zeitlupe und Herz
 ★ Tägliche Belohnungen und Missionen
@@ -50,9 +52,10 @@ Küçük gökkuşağı kuşu Lumi ile dünya turuna çık!
 
 Kanat çırpmak için dokun, boşluklardan süzül ve parlayan yıldızları topla. Her ülkenin kendine özgü simgeleri, renkleri ve müziği var – Paris'teki Eyfel Kulesi'nden İstanbul'un camilerine kadar.
 
-★ 4 seviye: Çocuk, Kolay, Orta ve Zor – tüm aile için eğlence
+★ 4 zorluk seviyesi – rahattan gerçekten zora
 ★ Dünya turunda açılacak 15 ülke
-★ İki dünya: klasik sütunlar ve uçan balon evler
+★ Ünlü simgelerin yanından uçan balon evlerin arasında süzül
+★ Çevrimiçi liderlik tabloları: İlk 500 ve kendi sıran
 ★ Lumi'yi giydir: güneş gözlüğü, korsan bandı, taç, robot ve daha fazlası
 ★ Güçlendiriciler: Hayalet, Ağır Çekim ve Kalp
 ★ Günlük ödüller ve görevler

@@ -126,7 +126,19 @@ canvas{display:block}
 .pbtn[disabled]{opacity:.45}
 .cb.heart{border-color:#8a1230;background:linear-gradient(#ffb3cf,#ff6f9b);box-shadow:0 5px 0 #8a1230,0 10px 12px rgba(0,0,0,.3)}
 #pus{position:absolute;inset:0;z-index:9;display:flex;flex-direction:column;padding:14px;background:linear-gradient(#1d2f66,#0e1a2b)}
-#pus[hidden]{display:none}
+#pus[hidden]{display:none}#worlds.off{display:none!important}
+#lb{position:absolute;inset:0;z-index:9;display:flex;flex-direction:column;padding:14px;background:linear-gradient(#1d2f66,#0e1a2b)}#lb[hidden]{display:none}
+#lbH{margin:0 0 8px;text-align:center;font:400 24px var(--d);color:#FFD84D;letter-spacing:.03em}
+.lbtabs{display:flex;gap:6px;margin-bottom:8px}.lbtabs button{flex:1;padding:8px 4px;border-radius:12px;border:2px solid rgba(255,255,255,.35);background:rgba(255,255,255,.08);color:#fff;font:400 14px var(--d)}
+.lbtabs.sm button{font-size:12px;padding:6px 2px}.lbtabs button[aria-pressed="true"]{background:linear-gradient(#ffe27a,#ffa900);color:#5a3000;border-color:#7a4a00}
+#lbList{flex:1;min-height:0;overflow:auto;margin:0;padding:0 2px;list-style:none}
+#lbList li,#lbMe{display:grid;grid-template-columns:52px 26px 1fr auto;align-items:center;gap:8px;padding:8px 10px;margin-bottom:6px;border-radius:14px;background:rgba(255,255,255,.07);font:600 15px var(--b,inherit)}
+#lbList li .r{font:400 16px var(--d);text-align:center}#lbList li .s,#lbMe .s{font:400 17px var(--d);color:#FFD84D}
+#lbList li.m1{background:linear-gradient(90deg,rgba(255,216,77,.35),rgba(255,255,255,.07))}#lbList li.m2{background:linear-gradient(90deg,rgba(210,220,235,.3),rgba(255,255,255,.07))}#lbList li.m3{background:linear-gradient(90deg,rgba(230,150,90,.3),rgba(255,255,255,.07))}
+#lbList li.me,#lbMe{background:linear-gradient(90deg,#2fbf3a,#1f8f2a);box-shadow:0 0 0 2px #fff inset}
+#lbMe{margin:6px 0 0}#lbMe .r{font:400 16px var(--d);text-align:center}
+#lbNote{margin:6px 0 0;text-align:center;font-size:11px;opacity:.7;min-height:14px}
+
 #pus h2{margin:0 0 8px;text-align:center}
 #pus h2 svg{width:40px;height:40px;stroke:#FFD84D}
 #pgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;align-content:start}
@@ -280,7 +292,7 @@ canvas{display:block}
   <button id="menuBtn" type="button" hidden aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 11.5 12 4l8.5 7.5M6 10v9h12v-9"/></svg></button>
   <section id="start">
     <span class="devb" id="devb" hidden>DEV</span><button class="cbtn" id="setBtn" type="button" style="left:12px" aria-label="Settings"></button><button class="cbtn" id="giftBtn" type="button" style="right:12px" aria-label="Daily rewards"><i class="dot" id="giftDot" hidden></i></button><h1 class="logo">LUMI<span>FLY</span></h1>
-    <div class="stage"><button class="dnb rb" id="dnBtn" type="button" aria-pressed="false" aria-label="Day or night"></button><button class="dnb rb" id="spBtn" type="button" aria-pressed="false" aria-label="Sound" style="top:62px"></button><button class="dnb rb" id="vbBtn" type="button" aria-pressed="true" aria-label="Vibration" style="top:124px"></button><button class="dnb rb" id="puBtn" type="button" aria-label="Power-ups" style="top:62px;left:auto;right:0"><svg viewBox="0 0 24 24" fill="#ffd84d" stroke="#fff" stroke-width="2" stroke-linejoin="round"><path d="M13 2L4.5 13.5H11L10 22l8.5-11.5H12z"/></svg></button><button class="dnb rb gold" id="storeBtn" type="button" aria-label="Shop" style="top:124px;left:auto;right:0"></button><button class="shopb rb" id="shopBtn" type="button" aria-label="Outfits"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V6.6a2.4 2.4 0 1 0-2.4-2.4"/><path d="M12 8 3.2 15.2A1.6 1.6 0 0 0 4.2 18h15.6a1.6 1.6 0 0 0 1-2.8L12 8z"/></svg><i id="coinN">0</i></button><canvas id="plat" aria-hidden="true"></canvas><canvas id="big" aria-label="Your character"></canvas></div>
+    <div class="stage"><button class="dnb rb" id="dnBtn" type="button" aria-pressed="false" aria-label="Day or night"></button><button class="dnb rb" id="spBtn" type="button" aria-pressed="false" aria-label="Sound" style="top:62px"></button><button class="dnb rb" id="vbBtn" type="button" aria-pressed="true" aria-label="Vibration" style="top:124px"></button><button class="dnb rb" id="puBtn" type="button" aria-label="Power-ups" style="top:62px;left:auto;right:0"><svg viewBox="0 0 24 24" fill="#ffd84d" stroke="#fff" stroke-width="2" stroke-linejoin="round"><path d="M13 2L4.5 13.5H11L10 22l8.5-11.5H12z"/></svg></button><button class="dnb rb gold" id="storeBtn" type="button" aria-label="Shop" style="top:124px;left:auto;right:0"></button><button class="dnb rb" id="lbBtn" type="button" aria-label="Leaderboard" style="top:186px;left:auto;right:0"><svg viewBox="0 0 24 24" fill="#ffd84d" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"><path d="M7 4h10v4a5 5 0 0 1-10 0z"/><path d="M7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4" fill="none"/><path d="M10 13.5h4l.6 3.5H9.4zM8 20h8v-3H8z"/></svg></button><button class="shopb rb" id="shopBtn" type="button" aria-label="Outfits"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V6.6a2.4 2.4 0 1 0-2.4-2.4"/><path d="M12 8 3.2 15.2A1.6 1.6 0 0 0 4.2 18h15.6a1.6 1.6 0 0 0 1-2.8L12 8z"/></svg><i id="coinN">0</i></button><canvas id="plat" aria-hidden="true"></canvas><canvas id="big" aria-label="Your character"></canvas></div>
     <div class="lbl">Character</div>
     <div id="skins" role="group" aria-label="Choose character"></div>
     <p id="skmsg" role="status"></p>
@@ -305,6 +317,15 @@ canvas{display:block}
     <h2 aria-label="Power-ups"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4.5 13.5H11L10 22l8.5-11.5H12z"/></svg></h2>
     <div id="pgrid"></div>
     <p id="pmsg" role="status" style="text-align:center;font-size:13px;min-height:18px;margin-top:10px"></p>
+  </section>
+  <section id="lb" hidden>
+    <div class="shtop"><button id="lbClose" type="button" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><span class="cn" id="lbBest">0</span></div>
+    <h2 id="lbH"></h2>
+    <div class="lbtabs" id="lbModes"></div>
+    <div class="lbtabs sm" id="lbPer"></div>
+    <ol id="lbList"></ol>
+    <div id="lbMe"></div>
+    <p id="lbNote"></p>
   </section>
   <section id="cnt" hidden>
     <div class="shtop"><button id="cClose" type="button" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><span class="cn" id="cStars">0</span></div>
@@ -345,6 +366,9 @@ const LANGS=["de","en","tr"];
 let LANG="en";try{const s=localStorage.getItem("lf5-lang");if(LANGS.includes(s))LANG=s;else{const n=(navigator.language||"en").slice(0,2).toLowerCase();if(LANGS.includes(n))LANG=n}}catch(e){}
 document.documentElement.lang=LANG;
 const TX={
+lbT:["Top 500","Top 500","İlk 500"],lbToday:["Today","Heute","Bugün"],lbWeek:["This week","Woche","Bu hafta"],lbAll:["All time","Allzeit","Tüm zamanlar"],
+lbYou:["You","Du","Sen"],lbErr:["Sign in to Google Play Games to see the leaderboard.","Melde dich bei Google Play Games an, um die Bestenliste zu sehen.","Liderlik tablosunu görmek için Google Play Games'e giriş yap."],lbNone:["Play a round to get ranked!","Spiel eine Runde, um in die Liste zu kommen!","Sıralamaya girmek için bir tur oyna!"],
+lbDemo:["Demo data – in the app you see real players.","Demo-Daten – in der App siehst du echte Spieler.","Demo verileri – uygulamada gerçek oyuncuları görürsün."],
 m_kinder:["Kids","Kinder","Çocuk"],m_leicht:["Easy","Leicht","Kolay"],m_mittel:["Medium","Mittel","Orta"],m_schwer:["Hard","Schwer","Zor"],
 tapStartK:["Tap to start!","Tippen zum Start!","Başlamak için dokun!"],tapStart:["Tap to start","Tippen zum Start","Başlamak için dokun"],
 best:["Best","Rekord","Rekor"],score:["Score","Punkte","Skor"],again:["Tap to try again","Tippen für neue Runde","Tekrar için dokun"],
@@ -453,7 +477,7 @@ function revive(free){
   pipes.forEach(q=>q.x+=dx);stars.forEach(q=>q.x+=dx);by=p?p.gy:H/2;bv=0;rot=0;ang=0;inv=110;if(free!==false)rv.n++;st="play";
 }
 function die(){
-  if(st!=="play"||inv>0)return;st="over";ang=1;bv=0;overAt=performance.now();coins+=(got-gotPaid)*(passOn()?2:1);gotPaid=got;saveFit();saveTour();sfx("die");buzz(30);
+  if(st!=="play"||inv>0)return;st="over";ang=1;bv=0;overAt=performance.now();coins+=(got-gotPaid)*(passOn()?2:1);gotPaid=got;try{if(window.Native&&Native.lb&&score>0)Native.lb.submit(mode,score)}catch(e){}saveFit();saveTour();sfx("die");buzz(30);
   msg=kid()?(got>=3?T("great"):T("tryK")):T("over");if(!rv.dead){rv.dead=1;Mi.add("runs",1)}Mi.max("score",score);
   if(score>best){if(best>0){msg=T("newBest");burst(BX,by,34,["#ffd84d","#fff","#ff7ab8","#7fe0ff"])}best=score;try{localStorage.setItem("sf3-best-"+mode,best)}catch(e){}}
 }
@@ -1273,7 +1297,9 @@ function tailUI(){
 tailSel.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;tailFlag=b.dataset.t==="flag";try{localStorage.setItem("lf5-tail",tailFlag?"flag":"bird")}catch(x){}tailUI()});
 
 /* ---- World "Houses": illustrated country houses (pre-drawn once into sprites, so the game stays smooth), balloons and lanterns hanging from the sky. ---- */
-let world="pillars";try{if(localStorage.getItem("lf5-world")==="houses")world="houses"}catch(e){}
+/* Only the landmark world (balloon houses) is used. The pillar world stays in the code and can come back as a bonus world: SHOW_PILLARS=true. */
+const SHOW_PILLARS=false;
+let world="houses";if(SHOW_PILLARS){try{if(localStorage.getItem("lf5-world")==="pillars")world="pillars"}catch(e){}}
 function HW(){return world==="houses"}
 const HST={
  fr:{rt:"mansard",rh:28,k:.8,wall:"#f3e6c8",roof:"#66798f",roof2:"#4c5c71",frame:"#eef1f4",tex:"stone",balc:true,flowers:"#e8434f",dormer:true,chim:true,door:"#2f4a6b",trim:"#e2d2ac"},
@@ -1484,7 +1510,7 @@ const WI={pillars:'<svg viewBox="0 0 24 24"><rect x="6.5" y="2" width="11" heigh
 const wsel=$("worlds");
 function worldUI(){wsel.innerHTML=["pillars","houses"].map(k=>`<button type="button" role="radio" data-w="${k}" class="${world===k?"on":""}" aria-checked="${world===k}" aria-label="${k}">${WI[k]}</button>`).join("")}
 wsel.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;world=b.dataset.w;try{localStorage.setItem("lf5-world",world)}catch(x){}worldUI();reset();st="menu"});
-worldUI();
+worldUI();if(!SHOW_PILLARS)document.getElementById("worlds").classList.add("off");
 
 Object.assign(OUT,{"cn":[[[-50.0,-7.4],[-47.6,-2.4],[-42.7,0.6],[-41.0,5.6],[-41.8,9.7],[-37.8,11.7],[-31.2,15.3],[-26.3,15.9],[-19.8,16.1],[-11.7,15.1],[-9.2,21.7],[-10.0,23.7],[-7.6,27.8],[-5.1,29.4],[-3.5,27.0],[-0.2,26.1],[3.8,27.8],[6.3,28.8],[9.5,29.8],[11.2,28.8],[14.4,27.4],[17.7,26.1],[21.0,24.7],[24.2,21.3],[26.7,17.7],[28.8,12.7],[28.3,9.7],[27.2,6.6],[25.0,2.6],[26.3,-0.4],[29.9,-2.4],[27.5,-4.0],[23.4,-4.8],[22.3,-6.4],[24.2,-7.6],[28.3,-10.1],[30.8,-8.0],[33.2,-8.8],[35.6,-11.5],[39.7,-12.5],[43.0,-13.5],[43.8,-18.1],[47.1,-18.5],[50.0,-25.1],[43.8,-23.9],[40.5,-27.4],[38.1,-28.6],[34.8,-34.2],[29.1,-35.4],[27.0,-32.4],[25.5,-28.6],[22.3,-27.6],[18.5,-24.3],[25.0,-21.5],[21.6,-21.7],[16.1,-19.3],[12.5,-15.9],[9.5,-13.7],[4.6,-13.3],[1.4,-11.7],[-5.1,-13.7],[-12.8,-13.9],[-14.9,-17.1],[-21.5,-18.9],[-21.8,-22.1],[-26.3,-25.7],[-28.0,-26.8],[-30.1,-22.5],[-34.5,-22.9],[-35.6,-19.5],[-39.1,-18.5],[-38.6,-14.3],[-44.6,-10.5]],[[7.3,33.4],[8.7,35.4],[10.4,34.6],[11.2,32.4],[9.9,31.6],[8.2,32.2]]],"es":[[[-50.0,-32.3],[-39.8,-39.5],[-16.1,-37.4],[7.5,-36.4],[9.1,-35.4],[28.7,-30.3],[48.4,-26.2],[47.6,-21.0],[31.1,-11.8],[23.2,-1.5],[20.9,4.6],[24.8,10.8],[17.7,23.1],[10.6,29.2],[5.9,32.3],[-11.4,32.3],[-20.9,39.5],[-26.4,31.3],[-35.0,27.2],[-35.0,20.0],[-31.5,16.9],[-34.3,4.6],[-31.9,1.5],[-31.1,-11.8],[-25.6,-17.9],[-40.6,-20.0],[-46.9,-21.0]],[[42.1,3.6],[47.6,5.6],[50.0,1.5],[46.9,-1.0],[43.7,1.0]]],"th":[[[-27.0,-37.0],[-21.7,-45.2],[-10.3,-50.0],[-6.3,-47.9],[-2.3,-43.8],[-3.7,-30.1],[3.7,-34.9],[9.7,-33.6],[21.0,-29.5],[21.7,-22.6],[27.0,-17.1],[25.0,-8.2],[9.7,-7.5],[5.7,-2.7],[6.3,6.2],[1.7,3.4],[-4.3,3.4],[-4.3,-2.7],[-9.7,-2.1],[-10.3,6.2],[-15.7,18.5],[-11.0,26.7],[-8.3,32.9],[-7.0,39.0],[-3.7,42.8],[3.7,47.3],[1.7,50.0],[-4.3,45.9],[-9.0,45.2],[-12.3,42.5],[-17.7,34.9],[-21.7,34.2],[-20.3,21.9],[-19.7,17.1],[-15.7,6.8],[-15.7,-0.7],[-21.0,-10.3],[-22.3,-13.7],[-19.7,-21.2],[-26.4,-26.7]]],"ae":[[[-50.0,0.7],[-43.4,7.5],[-29.3,30.5],[21.0,40.5],[25.3,35.7],[34.9,29.1],[32.0,17.1],[41.7,6.4],[43.8,-5.0],[50.0,-14.6],[47.3,-32.3],[43.2,-40.5],[33.4,-30.0],[23.0,-18.7],[14.7,-11.8],[0.2,3.6],[-12.2,3.0],[-28.8,1.8],[-41.3,6.4]]],"my":[[[-50.0,-12.5],[-45.3,-14.9],[-41.1,-9.4],[-39.6,-11.5],[-32.8,-4.2],[-32.8,3.1],[-30.7,7.3],[-28.1,13.6],[-32.3,14.1],[-37.5,10.4],[-43.2,6.3],[-46.9,0.5],[-48.4,-5.2],[-49.0,-9.9]],[[-0.5,11.0],[3.6,12.5],[7.8,15.7],[16.1,13.1],[22.4,13.6],[25.5,13.6],[29.7,8.4],[30.2,4.2],[32.8,-1.6],[42.7,-0.5],[46.4,-2.6],[44.8,-6.8],[50.0,-7.3],[45.8,-10.4],[41.1,-12.5],[38.5,-15.7],[35.9,-15.1],[32.8,-10.4],[29.7,-6.8],[27.1,-4.7],[23.4,-2.6],[19.8,2.1],[14.6,5.2],[8.9,8.4]]]});
 
@@ -2145,6 +2171,42 @@ function drawBanner(dt){
 let TT=0;
 function loop(n){theme();const dt=Math.min(2.5,(n-last)/16.667);last=n;TT+=dt;if(st!=="pause"){if(slow>0){slow-=dt;if(ghost>0)ghost-=dt*.5;update(dt*.5)}else update(dt)}draw();drawBanner(dt);contUI();puUI();extraUI();if(st==="menu"){previews(TT);drawPlat(TT);shopPrev(TT)}requestAnimationFrame(loop)}
 toMenu();requestAnimationFrame(loop);
+
+/* ===================== Leaderboard (Top 500 + own rank) =====================
+   Browser: demo data. App: Google Play Games / Apple Game Center via window.Native.lb */
+const LB_MODES=["kinder","leicht","mittel","schwer"],LB_PER=[["d","lbToday"],["w","lbWeek"],["a","lbAll"]];
+let lbMode="mittel",lbPer="a";
+function myBest(m){try{return +localStorage.getItem("sf3-best-"+m)||0}catch(e){return 0}}
+function lbDemo(m,per){ // fake players, deterministic
+  const top={kinder:260,leicht:180,mittel:120,schwer:70}[m]*({d:.55,w:.8,a:1}[per]);
+  const A=["Sky","Nova","Ace","Lumi","Star","Pixel","Zed","Mia","Leo","Ece","Can","Ali","Emma","Noah","Deniz","Yuki","Omar","Sara","Ben","Lia"],B=["Flyer","Wing","Hero","Kid","Pro","Bird","Dash","Ray","Fox","King","Queen","Boy","Girl","Max","Jet"];
+  const F=["tr","de","fr","gb","us","it","es","jp","br","in","eg","nl","pl","se","kr"];
+  let seed={kinder:1,leicht:2,mittel:3,schwer:4}[m]*97+{d:1,w:2,a:3}[per];const R=()=>(seed=(seed*16807)%2147483647)/2147483647;
+  const out=[];for(let i=0;i<500;i++){const sc=Math.max(1,Math.round(top*Math.pow(1-i/520,1.9)+R()*2));out.push({n:A[Math.floor(R()*A.length)]+B[Math.floor(R()*B.length)]+(R()<.6?Math.floor(R()*99):""),s:sc,f:F[Math.floor(R()*F.length)]})}
+  out.sort((x,y)=>y.s-x.s);return out}
+const FLAG=f=>f.toUpperCase().replace(/./g,c=>String.fromCodePoint(127397+c.charCodeAt(0)));
+async function lbLoad(){
+  const mine=myBest(lbMode);document.getElementById("lbBest").textContent="🏆 "+mine;
+  let rows=[],me=null,err="";const demo=!window.Native;
+  document.getElementById("lbList").innerHTML='<li><span></span><span></span><span>…</span><span></span></li>';
+  if(!demo){try{const r=await Native.lb.load(lbMode,lbPer);rows=r.rows;me=r.me&&r.me.rank>0?r.me:null;if(me&&me.rank<=rows.length)rows[me.rank-1].me=1}catch(e){err=T("lbErr")}}
+  else{rows=lbDemo(lbMode,lbPer);if(mine>0){let rank=rows.findIndex(x=>x.s<mine);if(rank<0)rank=rows.length;me={rank:rank+1,s:mine,n:T("lbYou")};if(rank<500){rows.splice(rank,0,{n:T("lbYou"),s:mine,f:"",me:1});rows.length=500}}}
+  const L=document.getElementById("lbList");
+  L.innerHTML=rows.map((x,i)=>`<li class="${i<3?"m"+(i+1):""}${x.me?" me":""}"><span class="r">${i<3?["🥇","🥈","🥉"][i]:i+1}</span><span>${x.f?FLAG(x.f):"⭐"}</span><span>${String(x.n).replace(/[<&]/g,"")}</span><span class="s">${x.s}</span></li>`).join("");
+  const M=document.getElementById("lbMe");
+  M.innerHTML=me?`<span class="r">#${me.rank>99999?"99999+":me.rank.toLocaleString()}</span><span>⭐</span><span>${T("lbYou")}</span><span class="s">${me.s}</span>`:`<span></span><span></span><span>${T("lbNone")}</span><span></span>`;
+  document.getElementById("lbNote").textContent=demo?T("lbDemo"):err;
+  const meRow=L.querySelector(".me");if(meRow)meRow.scrollIntoView({block:"center"});else L.scrollTop=0}
+function lbUI(){
+  document.getElementById("lbH").textContent="🏆 "+T("lbT");
+  document.getElementById("lbModes").innerHTML=LB_MODES.map(m=>`<button type="button" data-m="${m}" aria-pressed="${m===lbMode}">${T("m_"+m)}</button>`).join("");
+  document.getElementById("lbPer").innerHTML=LB_PER.map(([k,l])=>`<button type="button" data-p="${k}" aria-pressed="${k===lbPer}">${T(l)}</button>`).join("");
+  lbLoad()}
+document.getElementById("lbModes").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;lbMode=b.dataset.m;lbUI()});
+document.getElementById("lbPer").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;lbPer=b.dataset.p;lbUI()});
+document.getElementById("lbBtn").addEventListener("click",()=>{lbMode=mode;document.getElementById("lb").hidden=false;lbUI()});
+document.getElementById("lbClose").addEventListener("click",()=>{document.getElementById("lb").hidden=true});
+if(window.Native&&!Native.lb)document.getElementById("lbBtn").style.display="none"; /* app: hidden until the leaderboard IDs are set */
 </script>
 
 </body>

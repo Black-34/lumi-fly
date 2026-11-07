@@ -47,6 +47,22 @@ def gradle(s):
     return s
 edit(f'{A}/build.gradle', gradle)
 
+# ---- Leaderboards: Google Play Games Services v2 ----
+# Fill in after setting up Play Games Services in the Play Console (Grow > Play Games Services > Setup):
+PLAY_GAMES_APP_ID = os.environ.get('PLAY_GAMES_APP_ID') or ''   # e.g. '123456789012' (only digits)
+import glob
+pkg_dir = os.path.dirname(glob.glob(f'{A}/src/main/java/**/MainActivity.java', recursive=True)[0])
+shutil.copy('native-src/android/LeaderboardPlugin.java', pkg_dir)
+edit(glob.glob(f'{A}/src/main/java/**/MainActivity.java', recursive=True)[0], lambda s: s.replace(
+    'public class MainActivity extends BridgeActivity {}',
+    'public class MainActivity extends BridgeActivity {\n    @Override\n    public void onCreate(android.os.Bundle savedInstanceState) {\n        registerPlugin(LeaderboardPlugin.class);\n        super.onCreate(savedInstanceState);\n    }\n}'))
+edit(f'{A}/build.gradle', lambda s: s.replace("    implementation project(':capacitor-android')",
+    "    implementation project(':capacitor-android')\n    implementation 'com.google.android.gms:play-games-v2:21.0.0'", 1))
+if PLAY_GAMES_APP_ID:
+    edit(f'{A}/src/main/res/values/strings.xml', lambda s: s.replace('</resources>', f'    <string name="game_services_project_id" translatable="false">{PLAY_GAMES_APP_ID}</string>\n</resources>'))
+    edit(f'{A}/src/main/AndroidManifest.xml', lambda s: re.sub(r'(<application\b[^>]*>)', r'\1\n        <meta-data android:name="com.google.android.gms.games.APP_ID" android:value="@string/game_services_project_id" />', s, count=1))
+print('Play Games leaderboards:', 'ON (' + PLAY_GAMES_APP_ID + ')' if PLAY_GAMES_APP_ID else 'off (no app id yet)')
+
 # ---- Play Console checks ----
 v = open('android/variables.gradle').read()
 target = int(re.search(r'targetSdkVersion\s*=\s*(\d+)', v).group(1))

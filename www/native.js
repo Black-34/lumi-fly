@@ -17,7 +17,10 @@
     ios: { inter: '', reward: '' },
     privacyUrl: 'https://black-34.github.io/gfe-privacy/lumifly/',
     imprintUrl: 'https://black-34.github.io/gfe-privacy/lumifly/#contact',
-    termsUrl: 'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/'
+    termsUrl: 'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/',
+    // Google Play Games leaderboard IDs (Play Console > Play Games Services > Leaderboards), one per level.
+    // While empty, the leaderboard button stays hidden in the app.
+    leaderboards: { kinder: '', leicht: '', mittel: '', schwer: '' }
   };
   var TEST = IOS
     ? { inter: 'ca-app-pub-3940256099942544/4411468910', reward: 'ca-app-pub-3940256099942544/1712485313' }
@@ -183,7 +186,23 @@
   });
   App.addListener('pause', function () { try { if (st === 'play') pauseGame() } catch (e) {} });
 
-  window.Native = { buzz: buzz, ad: ad, store: nstore, price: price, privacy: privacy, terms: CFG.termsUrl, privacyUrl: CFG.privacyUrl };
+  /* ---------- Leaderboards (Google Play Games / later Game Center) ---------- */
+  var LBP = reg('Leaderboard'), LBID = CFG.leaderboards, lbCache = {};
+  var lbOn = !IOS && Object.keys(LBID).every(function (k) { return !!LBID[k] });
+  var lb = lbOn ? {
+    submit: function (mode, score) { if (LBID[mode]) LBP.submit({ id: LBID[mode], score: score }).catch(function () {}) },
+    load: async function (mode, per) {
+      var key = mode + per, c = lbCache[key];
+      if (c && Date.now() - c.t < 120000) return c.v;
+      var si = await LBP.signIn();
+      if (!si.signedIn) throw new Error('signin');
+      var r = await LBP.load({ id: LBID[mode], span: per, max: 500 });
+      var v = { rows: (r.rows || []).map(function (x) { return { n: x.n, s: x.s, f: '' } }), me: r.me ? { rank: r.me.rank, s: r.me.s } : null };
+      lbCache[key] = { t: Date.now(), v: v }; return v;
+    }
+  } : null;
+
+  window.Native = { lb: lb, buzz: buzz, ad: ad, store: nstore, price: price, privacy: privacy, terms: CFG.termsUrl, privacyUrl: CFG.privacyUrl };
   document.addEventListener('deviceready', initStore, false);
   window.addEventListener('load', function () { setTimeout(initAds, 600) });
 })();
