@@ -20,7 +20,7 @@
     termsUrl: 'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/',
     // Google Play Games leaderboard IDs (Play Console > Play Games Services > Leaderboards), one per level.
     // While empty, the leaderboard button stays hidden in the app.
-    leaderboards: { kinder: '', leicht: '', mittel: '', schwer: '' }
+    leaderboards: { kinder: 'CgkIicKfjNsbEAIQAQ', leicht: 'CgkIicKfjNsbEAIQAg', mittel: 'CgkIicKfjNsbEAIQAw', schwer: 'CgkIicKfjNsbEAIQBA' }
   };
   var TEST = IOS
     ? { inter: 'ca-app-pub-3940256099942544/4411468910', reward: 'ca-app-pub-3940256099942544/1712485313' }
