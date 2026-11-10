@@ -49,7 +49,7 @@ edit(f'{A}/build.gradle', gradle)
 
 # ---- Leaderboards: Google Play Games Services v2 ----
 # Fill in after setting up Play Games Services in the Play Console (Grow > Play Games Services > Setup):
-PLAY_GAMES_APP_ID = os.environ.get('PLAY_GAMES_APP_ID') or ''   # e.g. '123456789012' (only digits)
+PLAY_GAMES_APP_ID = os.environ.get('PLAY_GAMES_APP_ID') or '952166244617'   # e.g. '123456789012' (only digits)
 import glob
 pkg_dir = os.path.dirname(glob.glob(f'{A}/src/main/java/**/MainActivity.java', recursive=True)[0])
 shutil.copy('native-src/android/LeaderboardPlugin.java', pkg_dir)
