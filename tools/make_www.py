@@ -20,6 +20,8 @@ m = re.search(r'<link[^>]+fonts\.googleapis\.com[^>]*>', s)
 if not m: sys.exit('PATCH FAILED: Google Fonts link')
 s = s.replace(m.group(0), '<link rel="stylesheet" href="fonts/fonts.css">')
 s = re.sub(r'<link[^>]+(fonts\.gstatic\.com|fonts\.googleapis\.com)[^>]*>\s*', '', s)
+# 2b) app: edge to edge (no frame, no rounded corners), only keep clear of the notch / rounded screen corners
+rep('</head>', '<style>body{padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)!important}.app{height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))!important;border-radius:0!important;box-shadow:none!important}</style>\n</head>')
 # 3) native layer before the game script
 rep('<script>', '<script src="capacitor.js"></script><script src="native.js"></script>\n<script>')
 # 4) vibration via the phone's vibration motor

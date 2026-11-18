@@ -6,6 +6,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      live_ads:
+        description: 'Echte Werbung (nur fuer die Produktions-Version!)'
+        type: boolean
+        default: false
 
 jobs:
   build:
@@ -27,6 +32,15 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Prepare web files (runtime + fonts)
         run: npm run prepare:web
+      - name: Ads mode (test ads unless live_ads is chosen)
+        run: |
+          if [ "${{ inputs.live_ads }}" = "true" ]; then
+            sed -i 's/testAds: true,/testAds: false,/' www/native.js
+            echo "ADS=LIVE" >> $GITHUB_ENV
+          else
+            echo "ADS=TEST" >> $GITHUB_ENV
+          fi
+          grep -n "testAds:" www/native.js
       - name: Create Android project
         run: |
           npx cap add android
@@ -53,7 +67,7 @@ jobs:
         run: |
           mkdir -p out
           cp android/app/build/outputs/apk/debug/app-debug.apk "out/LumiFly-test-${{ github.run_number }}.apk"
-          if [ -f android/app/build/outputs/bundle/release/app-release.aab ]; then cp android/app/build/outputs/bundle/release/app-release.aab "out/LumiFly-${{ github.run_number }}.aab"; fi
+          if [ -f android/app/build/outputs/bundle/release/app-release.aab ]; then cp android/app/build/outputs/bundle/release/app-release.aab "out/LumiFly-${{ github.run_number }}-${{ env.ADS }}.aab"; fi
       - uses: actions/upload-artifact@v6
         with:
           name: LumiFly-${{ github.run_number }}
@@ -65,4 +79,4 @@ jobs:
           name: Lumi Fly Test ${{ github.run_number }}
           prerelease: true
           files: out/*
-          body: "Test-APK zum direkten Installieren auf dem Handy."
+          body: "Werbung: ${{ env.ADS }} (TEST = Testwerbung fuer Tester, LIVE = echte Werbung nur fuer Produktion)."
