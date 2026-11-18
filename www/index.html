@@ -1112,7 +1112,7 @@ const PLAYI='<svg viewBox="0 0 24 24"><path d="M7 4.5l13 7.5-13 7.5z" fill="#fff
 function contUI(){
   const show=st==="over"&&performance.now()-overAt>OVD&&dlg.hidden;
   const canRate=RATE_REWARD&&!rated&&rv.n<2,canAd=!rv.ad&&rv.n<2,canHeart=pu.heart>0;
-  cRate.hidden=!canRate;cAd.hidden=!canAd;cHeart.hidden=!canHeart;const canX2=got>0&&!rv.x2;cX2.hidden=!canX2;contEl.hidden=!(show&&(canRate||canAd||canHeart||canX2));
+  setP(cRate,"hidden",!canRate);setP(cAd,"hidden",!canAd);setP(cHeart,"hidden",!canHeart);const canX2=got>0&&!rv.x2;setP(cX2,"hidden",!canX2);setP(contEl,"hidden",!(show&&(canRate||canAd||canHeart||canX2)));
 }
 function closeDlg(){dlg.hidden=true;dbody.innerHTML="";dbody.parentNode.classList.remove("pud")}
 cRate.addEventListener("click",()=>{
@@ -1131,9 +1131,10 @@ cAd.addEventListener("click",()=>{if(window.Native){Native.ad(()=>{rv.ad=true;re
 const puBar=document.getElementById("pubar"),puG=document.getElementById("puGhost"),gN=document.getElementById("gN"),hN=document.getElementById("hN"),cHeart=document.getElementById("cHeart"),cHN=document.getElementById("cHN");
 puG.addEventListener("click",useGhost);const puS=document.getElementById("puSlow"),slN=document.getElementById("sN");puS.addEventListener("click",useSlow);
 cHeart.addEventListener("click",()=>{if(pu.heart>0&&st==="over"){pu.heart--;savePU();Mi.add("pu",1);revive(false)}});
+const UIC={};function setP(el,k,v){if(el[k]!==v)el[k]=v}function setT(el,v){v=String(v);if(UIC[el.id]!==v){UIC[el.id]=v;el.textContent=v}}
 function puUI(){
-  puBar.hidden=!(st==="play"||st==="ready");
-  gN.textContent=pu.ghost;hN.textContent=pu.heart;puG.disabled=!(pu.ghost>0&&ghost<=0&&st==="play");cHN.textContent=pu.heart;slN.textContent=pu.slow;puS.disabled=!(pu.slow>0&&slow<=0&&st==="play");
+  setP(puBar,"hidden",!(st==="play"||st==="ready"));
+  setT(gN,pu.ghost);setT(hN,pu.heart);setP(puG,"disabled",!(pu.ghost>0&&ghost<=0&&st==="play"));setT(cHN,pu.heart);setT(slN,pu.slow);setP(puS,"disabled",!(pu.slow>0&&slow<=0&&st==="play"));
 }
 const pusS=document.getElementById("pus"),pgrid=document.getElementById("pgrid"),pmsg=document.getElementById("pmsg");let pend2="";
 function pshopUI(){
@@ -2239,7 +2240,7 @@ function drawBanner(dt){
   flag(ctx,CNT[i].f,W/2-36,160,72,48);txt(CNT[i].n,W/2,236,22,"#fff","#1b3a57");ctx.restore();
 }
 let TT=0;
-function loop(n){theme();const dt=Math.min(2.5,(n-last)/16.667);last=n;TT+=dt;if(st!=="pause"){if(slow>0){slow-=dt;if(ghost>0)ghost-=dt*.5;update(dt*.5)}else update(dt)}draw();drawBanner(dt);contUI();puUI();extraUI();if(st==="menu"){previews(TT);drawPlat(TT);shopPrev(TT)}requestAnimationFrame(loop)}
+let dtS=1;function loop(n){theme();const raw=(n-last)/16.667;last=n;dtS+=((raw>0&&raw<6?Math.min(raw,2.5):1)-dtS)*.18;const dt=dtS;TT+=dt;if(st!=="pause"){if(slow>0){slow-=dt;if(ghost>0)ghost-=dt*.5;update(dt*.5)}else update(dt)}draw();drawBanner(dt);contUI();puUI();extraUI();if(st==="menu"){previews(TT);drawPlat(TT);shopPrev(TT)}requestAnimationFrame(loop)}
 toMenu();requestAnimationFrame(loop);
 
 /* ===================== Leaderboard (Top 500 + own rank) =====================
