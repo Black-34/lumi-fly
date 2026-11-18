@@ -24,6 +24,8 @@ edit(f'{A}/src/main/res/values/strings.xml',
 def man(s):
     s = re.sub(r'(<application\b[^>]*>)', r'\1\n        <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="@string/admob_app_id" />', s, count=1)
     s = s.replace('android:name=".MainActivity"', 'android:name=".MainActivity"\n            android:screenOrientation="portrait"', 1)
+    # portrait is preferred, not required: otherwise Play hides the app from devices without a portrait screen
+    s = s.replace('</manifest>', '    <uses-feature android:name="android.hardware.screen.portrait" android:required="false" />\n</manifest>', 1)
     return s
 edit(f'{A}/src/main/AndroidManifest.xml', man)
 
