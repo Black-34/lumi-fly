@@ -472,7 +472,7 @@ const kid=()=>mode==="kinder";
 const rnd=(a,b)=>a+Math.random()*(b-a);
 function loadBest(){best=0;try{best=+localStorage.getItem("sf3-best-"+mode)||0}catch(e){}}
 let popT=0,fx=[];
-function reset(){popT=0;fx=[];if(typeof lastLK!=="undefined")lastLK=null;slow=0;ang=0;ghost=0;pus=[];inv=0;gotPaid=0;rv={n:0,ad:false};D=MODES[mode];PW=D.pw;BR=11*D.S;loadBest();by=H/2-50;bv=0;rot=0;pipes=[];stars=[];parts=[];hist=[];score=0;got=0;dist=0;spd=D.sp;for(let i=0;i<3;i++)addPipe(W+90+i*D.space)}
+function reset(){popT=0;fx=[];if(typeof lastLK!=="undefined")lastLK=null;slow=0;ang=0;ghost=0;pus=[];inv=0;gotPaid=0;rv={n:0,ad:false};D=MODES[mode];PW=D.pw;BR=11*D.S;loadBest();by=H/2-50;bv=0;rot=0;pipes=[];stars=[];parts=[];hist=[];score=0;got=0;dist=dist||0;spd=D.sp;for(let i=0;i<3;i++)addPipe(W+90+i*D.space)}
 let sN=0;
 function addPipe(x){
   /* Fairness rule: the next gap is always reachable from the previous one at top speed. */
