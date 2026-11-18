@@ -11,9 +11,9 @@
   /* ===== SETTINGS – change before the store release ===== */
   var CFG = {
     // true = Google test ads (for test builds). Set false only with your own AdMob IDs.
-    testAds: true,
+    testAds: false,
     // Your own AdMob ad unit IDs (from admob.google.com). Leave empty while testAds is true.
-    android: { inter: '', reward: '' },
+    android: { inter: 'ca-app-pub-6439670756752345/2794227757', reward: 'ca-app-pub-6439670756752345/3476754031' },
     ios: { inter: '', reward: '' },
     privacyUrl: 'https://black-34.github.io/gfe-privacy/lumifly/',
     imprintUrl: 'https://black-34.github.io/gfe-privacy/lumifly/#contact',

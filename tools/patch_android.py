@@ -6,7 +6,7 @@ A = 'android/app'
 run = int(os.environ.get('GITHUB_RUN_NUMBER', '1'))
 VERSION_CODE = 100 + run                     # always higher than the last upload
 VERSION_NAME = f'1.0.{run}'
-ADMOB_APP_ID = os.environ.get('ADMOB_APP_ID') or 'ca-app-pub-3940256099942544~3347511713'  # Google test ID until your own exists
+ADMOB_APP_ID = os.environ.get('ADMOB_APP_ID') or 'ca-app-pub-6439670756752345~6733472769'  # Lumi Fly AdMob app ID
 
 def edit(path, fn):
     s = open(path, encoding='utf-8').read(); n = fn(s)
