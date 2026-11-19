@@ -203,7 +203,8 @@
     }
   } : null;
 
-  window.Native = { lb: lb, buzz: buzz, ad: ad, store: nstore, price: price, privacy: privacy, terms: CFG.termsUrl, privacyUrl: CFG.privacyUrl };
+  window.Native = { lb: lb, buzz: buzz, ad: ad, store: nstore, price: price, privacy: privacy, terms: CFG.termsUrl, privacyUrl: CFG.privacyUrl, version: null };
+  try { App.getInfo().then(function (i) { window.Native.version = i.version + ' (' + i.build + ')' }).catch(function () {}) } catch (e) {}
   document.addEventListener('deviceready', initStore, false);
   window.addEventListener('load', function () { setTimeout(initAds, 600) });
 })();
