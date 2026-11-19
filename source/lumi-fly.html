@@ -1550,9 +1550,9 @@ function groundSprite(cid,vr,pw){
 function house(p){
   {const m=lmFor(p);if(m){drawLM(p,m);return}}
   groundAO(p.x+PW*.5,H-GR,PW*1.3);
-  {const G=hvGeo(p);if(G){const g=H-GR,bot=p.gy+D.gap/2,hh=g-bot+6,o=composeHouse(G,hh),x0=p.x+PW/2-G.w/2,sh=shadowOf("h"+G.c+G.i+"_"+Math.round(hh/3),o);
+  {const G=hvGeo(p);if(G){const g=H-GR,bot=p.gy+D.gap/2,hh=g-bot+6,x0=p.x+PW/2-G.w/2,sh=shadowOf("h"+G.c+G.i,composeHouse(G,220));
     ctx.save();ctx.globalAlpha=night?.22:.3;ctx.translate(x0,g-3);ctx.transform(1,0,-.62,.07,0,0);ctx.drawImage(sh,0,-hh,G.w,hh);ctx.restore();
-    ctx.drawImage(o,x0,bot,G.w,hh);return}}
+    drawHouse(G,x0,bot,hh);return}}
   const cid=CNT[ci()].f,S=HST[cid],vr=p.h%2,bot=p.gy+D.gap/2,g=H-GR,sp=houseSprite(cid,vr,PW,night);
   ctx.save();ctx.beginPath();ctx.rect(p.x-60,0,PW+120,g);ctx.clip();
   ctx.drawImage(sp.cv,p.x-sp.ox,bot-HPAD,sp.Wd,sp.Ht);
@@ -1962,6 +1962,19 @@ const HV={"eg":[{"ar":0.9213,"a":0.2596,"b":0.3745,"p":[0.004,0.008,0.016,0.029,
 Object.keys(HV).forEach(c=>HV[c].forEach((h,i)=>vecLoad(h.src,h.ar,640,cv=>{(HVC[c]=HVC[c]||[])[i]=cv})));
 const HCMP={};
 function hvGeo(p){const c=CNT[ci()].f,L=HVC[c];if(!L)return null;const i=p.h%HV[c].length,cv=L[i];if(!cv)return null;const H0=HV[c][i],w=PW*1.32,s=w/cv.width,topH=H0.a*cv.height*s;return{c,i,cv,H0,w,s,topH}}
+/* House stacks are drawn from three ready-made slices (roof, floor, base) every frame.
+   Before, a new picture was created for every few pixels of height - with the moving houses on Hard that meant
+   new pictures almost every frame (the stutter, worst with the tallest houses). */
+const HPART={};
+function houseParts(G){const k=G.c+G.i+"_"+Math.round(G.w);if(HPART[k])return HPART[k];
+  const R=2,cv=G.cv,H0=G.H0,ow=Math.round(G.w*R),s=ow/cv.width,ay=H0.a*cv.height,by=H0.b*cv.height;
+  const cut=(sy,sh)=>{const o=document.createElement("canvas");o.width=ow;o.height=Math.max(1,Math.round(sh*s));const c=o.getContext("2d");c.imageSmoothingQuality="high";c.drawImage(cv,0,sy,cv.width,sh,0,0,o.width,o.height);return o};
+  const full=document.createElement("canvas");full.width=ow;full.height=Math.round(cv.height*s);const fc=full.getContext("2d");fc.imageSmoothingQuality="high";fc.drawImage(cv,0,0,full.width,full.height);
+  return HPART[k]={top:cut(0,ay),mid:cut(ay,by-ay),bot:cut(by,cv.height-by),full,topH:ay*s/R,midH:(by-ay)*s/R,botH:(cv.height-by)*s/R}}
+function drawHouse(G,x0,y,hgt){const P=houseParts(G),avail=hgt-P.topH-P.botH;
+  if(avail<P.midH*.35){const sc=hgt/(P.full.height/2),ww=G.w*sc;ctx.drawImage(P.full,x0+(G.w-ww)/2,y,ww,hgt);return}
+  const n=Math.max(1,Math.round(avail/P.midH)),mh=avail/n;ctx.drawImage(P.top,x0,y,G.w,P.topH);
+  for(let i=0;i<n;i++)ctx.drawImage(P.mid,x0,y+P.topH+i*mh,G.w,mh+.5);ctx.drawImage(P.bot,x0,y+hgt-P.botH,G.w,P.botH)}
 function composeHouse(G,hgt){const k=G.c+G.i+"_"+Math.round(G.w)+"_"+Math.round(hgt/3);if(HCMP[k])return HCMP[k];
   const R=2,cv=G.cv,H0=G.H0,o=document.createElement("canvas");o.width=Math.round(G.w*R);o.height=Math.round(hgt*R);const c=o.getContext("2d");c.imageSmoothingQuality="high";
   const s=o.width/cv.width,ay=H0.a*cv.height,by=H0.b*cv.height,topH=ay*s,botH=(cv.height-by)*s,midH=(by-ay)*s,avail=o.height-topH-botH;
