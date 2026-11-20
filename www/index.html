@@ -1970,13 +1970,19 @@ function hvGeo(p){const c=CNT[ci()].f,L=HVC[c];if(!L)return null;const i=p.h%HV[
 const HPART={};
 function houseParts(G){const k=G.c+G.i+"_"+Math.round(G.w);if(HPART[k])return HPART[k];
   const R=2,cv=G.cv,H0=G.H0,ow=Math.round(G.w*R),s=ow/cv.width,ay=H0.a*cv.height,by=H0.b*cv.height;
-  const cut=(sy,sh)=>{const o=document.createElement("canvas");o.width=ow;o.height=Math.max(1,Math.round(sh*s));const c=o.getContext("2d");c.imageSmoothingQuality="high";c.drawImage(cv,0,sy,cv.width,sh,0,0,o.width,o.height);return o};
-  const full=document.createElement("canvas");full.width=ow;full.height=Math.round(cv.height*s);const fc=full.getContext("2d");fc.imageSmoothingQuality="high";fc.drawImage(cv,0,0,full.width,full.height);
-  return HPART[k]={top:cut(0,ay),mid:cut(ay,by-ay),bot:cut(by,cv.height-by),full,topH:ay*s/R,midH:(by-ay)*s/R,botH:(cv.height-by)*s/R}}
+  /* one big picture (atlas): roof | base | 24 stacked floors | whole house. Small canvases are not kept on the
+     graphics chip by the browser and get re-uploaded on every draw - one big atlas stays on the chip. */
+  const tp=Math.round(ay*s),bp=Math.round((cv.height-by)*s),mp=Math.max(1,Math.round((by-ay)*s)),fp=Math.round(cv.height*s),NM=24;
+  const a=document.createElement("canvas");a.width=ow;a.height=tp+bp+mp*NM+fp;const c=a.getContext("2d");c.imageSmoothingQuality="high";
+  c.drawImage(cv,0,0,cv.width,ay,0,0,ow,tp);c.drawImage(cv,0,by,cv.width,cv.height-by,0,tp,ow,bp);
+  c.drawImage(cv,0,ay,cv.width,by-ay,0,tp+bp,ow,mp);for(let i=1;i<NM;i<<=1)c.drawImage(a,0,tp+bp,ow,mp*i,0,tp+bp+mp*i,ow,mp*Math.min(i,NM-i));
+  c.drawImage(cv,0,0,cv.width,cv.height,0,tp+bp+mp*NM,ow,fp);
+  return HPART[k]={a,tp,bp,mp,fp,NM,ow,topH:tp/R,midH:mp/R,botH:bp/R,fullH:fp/R}}
 function drawHouse(G,x0,y,hgt){const P=houseParts(G),avail=hgt-P.topH-P.botH;
-  if(avail<P.midH*.35){const sc=hgt/(P.full.height/2),ww=G.w*sc;ctx.drawImage(P.full,x0+(G.w-ww)/2,y,ww,hgt);return}
-  const n=Math.max(1,Math.round(avail/P.midH)),mh=avail/n;ctx.drawImage(P.top,x0,y,G.w,P.topH);
-  for(let i=0;i<n;i++)ctx.drawImage(P.mid,x0,y+P.topH+i*mh,G.w,mh+.5);ctx.drawImage(P.bot,x0,y+hgt-P.botH,G.w,P.botH)}
+  if(avail<P.midH*.35){const sc=hgt/P.fullH,ww=G.w*sc;ctx.drawImage(P.a,0,P.tp+P.bp+P.mp*P.NM,P.ow,P.fp,x0+(G.w-ww)/2,y,ww,hgt);return}
+  const n=Math.max(1,Math.round(avail/P.midH)),mh=avail/n;ctx.drawImage(P.a,0,0,P.ow,P.tp,x0,y,G.w,P.topH);
+  for(let i=0;i<n;i+=P.NM){const m=Math.min(P.NM,n-i);ctx.drawImage(P.a,0,P.tp+P.bp,P.ow,P.mp*m,x0,y+P.topH+i*mh,G.w,mh*m+.5)}
+  ctx.drawImage(P.a,0,P.tp,P.ow,P.bp,x0,y+hgt-P.botH,G.w,P.botH)}
 function composeHouse(G,hgt){const k=G.c+G.i+"_"+Math.round(G.w)+"_"+Math.round(hgt/3);if(HCMP[k])return HCMP[k];
   const R=2,cv=G.cv,H0=G.H0,o=document.createElement("canvas");o.width=Math.round(G.w*R);o.height=Math.round(hgt*R);const c=o.getContext("2d");c.imageSmoothingQuality="high";
   const s=o.width/cv.width,ay=H0.a*cv.height,by=H0.b*cv.height,topH=ay*s,botH=(cv.height-by)*s,midH=(by-ay)*s,avail=o.height-topH-botH;
@@ -1986,7 +1992,7 @@ function composeHouse(G,hgt){const k=G.c+G.i+"_"+Math.round(G.w)+"_"+Math.round(
 let lmCnt=0;
 const SHC={};
 function shadowOf(key,img){if(SHC[key])return SHC[key];const a=document.createElement("canvas");a.width=Math.max(2,img.width>>3);a.height=Math.max(2,img.height>>3);const c=a.getContext("2d");c.drawImage(img,0,0,a.width,a.height);c.globalCompositeOperation="source-in";c.fillStyle="#2a1430";c.fillRect(0,0,a.width,a.height);
-  const b=document.createElement("canvas");b.width=a.width*2;b.height=a.height*2;const d=b.getContext("2d");d.imageSmoothingQuality="high";d.drawImage(a,0,0,b.width,b.height);return SHC[key]=b}
+  const f=Math.max(2,Math.ceil(Math.sqrt(20000/(a.width*a.height)))),b=document.createElement("canvas");b.width=a.width*f;b.height=a.height*f;const d=b.getContext("2d");d.imageSmoothingQuality="high";d.drawImage(a,0,0,b.width,b.height);return SHC[key]=b}
 function groundAO(cx,g,w){const ao=ctx.createRadialGradient(cx,g-2,0,cx,g-2,w*.62);ao.addColorStop(0,"rgba(40,20,40,.5)");ao.addColorStop(.6,"rgba(40,20,40,.18)");ao.addColorStop(1,"rgba(40,20,40,0)");ctx.save();ctx.translate(cx,g-2);ctx.scale(1,.16);ctx.translate(-cx,-(g-2));ctx.fillStyle=ao;ctx.beginPath();ctx.arc(cx,g-2,w*.62,0,7);ctx.fill();ctx.restore()}
 function drawLM(p,m){if(m.img){const g=H-GR,cx=p.x+PW/2,x0=cx-m.dw/2,sh=shadowOf(m.key,m.img);
     ctx.save();ctx.globalAlpha=night?.22:.32;ctx.translate(x0,g-3);ctx.transform(1,0,-.62,.07,0,0);ctx.drawImage(sh,0,-m.dh,m.dw,m.dh);ctx.restore();
