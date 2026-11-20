@@ -1558,7 +1558,7 @@ function house(p){
   const cid=CNT[ci()].f,S=HST[cid],vr=p.h%2,bot=p.gy+D.gap/2,g=H-GR,sp=houseSprite(cid,vr,PW,night);
   ctx.save();ctx.beginPath();ctx.rect(p.x-60,0,PW+120,g);ctx.clip();
   ctx.drawImage(sp.cv,p.x-sp.ox,bot-HPAD,sp.Wd,sp.Ht);
-  if(g-(bot+S.rh)>58){const gs=groundSprite(cid,vr,PW);ctx.drawImage(gs.cv,p.x-gs.ox,g-gs.h,gs.Wd,gs.h+4)}
+  {const fa=Math.min(1,(g-(bot+S.rh)-50)/16);if(fa>0){const gs=groundSprite(cid,vr,PW);ctx.globalAlpha=fa;ctx.drawImage(gs.cv,p.x-gs.ox,g-gs.h,gs.Wd,gs.h+4);ctx.globalAlpha=1}}
   ctx.restore();
   if(S.rt==="peak"||S.rt==="pagoda"||S.rt==="mansard"||S.rt==="thatch"){const fw=PW*.86,px=p.x+fw/2,py=bot,fc=FRIB[cid],wv=Math.sin(t*.12+p.ph);
     ctx.strokeStyle="#5a3a22";ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(px,py+1);ctx.lineTo(px,py-15);ctx.stroke();
@@ -1975,14 +1975,17 @@ function houseParts(G){const k=G.c+G.i+"_"+Math.round(G.w);if(HPART[k])return HP
   const tp=Math.round(ay*s),bp=Math.round((cv.height-by)*s),mp=Math.max(1,Math.round((by-ay)*s)),fp=Math.round(cv.height*s),NM=24;
   const a=document.createElement("canvas");a.width=ow;a.height=tp+bp+mp*NM+fp;const c=a.getContext("2d");c.imageSmoothingQuality="high";
   c.drawImage(cv,0,0,cv.width,ay,0,0,ow,tp);c.drawImage(cv,0,by,cv.width,cv.height-by,0,tp,ow,bp);
-  c.drawImage(cv,0,ay,cv.width,by-ay,0,tp+bp,ow,mp);for(let i=1;i<NM;i<<=1)c.drawImage(a,0,tp+bp,ow,mp*i,0,tp+bp+mp*i,ow,mp*Math.min(i,NM-i));
+  c.drawImage(cv,0,ay,cv.width,by-ay,0,tp+bp,ow,mp);for(let i=1;i<NM;i<<=1){const m=Math.min(i,NM-i);c.drawImage(a,0,tp+bp,ow,mp*m,0,tp+bp+mp*i,ow,mp*m)}
   c.drawImage(cv,0,0,cv.width,cv.height,0,tp+bp+mp*NM,ow,fp);
   return HPART[k]={a,tp,bp,mp,fp,NM,ow,topH:tp/R,midH:mp/R,botH:bp/R,fullH:fp/R}}
-function drawHouse(G,x0,y,hgt){const P=houseParts(G),avail=hgt-P.topH-P.botH;
-  if(avail<P.midH*.35){const sc=hgt/P.fullH,ww=G.w*sc;ctx.drawImage(P.a,0,P.tp+P.bp+P.mp*P.NM,P.ow,P.fp,x0+(G.w-ww)/2,y,ww,hgt);return}
-  const n=Math.max(1,Math.round(avail/P.midH)),mh=avail/n;ctx.drawImage(P.a,0,0,P.ow,P.tp,x0,y,G.w,P.topH);
-  for(let i=0;i<n;i+=P.NM){const m=Math.min(P.NM,n-i);ctx.drawImage(P.a,0,P.tp+P.bp,P.ow,P.mp*m,x0,y+P.topH+i*mh,G.w,mh*m+.5)}
-  ctx.drawImage(P.a,0,P.tp,P.ow,P.bp,x0,y+hgt-P.botH,G.w,P.botH)}
+/* The moving house keeps its real floor height: floors move with the roof and slide behind the base at the ground.
+   (Before, all floors were squeezed or stretched to fit the current height and the floor count jumped,
+   so tall houses visibly jittered while moving up and down.) */
+function drawHouse(G,x0,y,hgt){const P=houseParts(G),g=y+hgt,fy=y+P.topH,fe=g-P.botH;
+  if(fe>fy){ctx.save();ctx.beginPath();ctx.rect(x0-2,fy-1,G.w+4,fe-fy+2);ctx.clip();
+    for(let yy=fy;yy<fe;yy+=P.midH*P.NM){ctx.drawImage(P.a,0,P.tp+P.bp,P.ow,P.mp*P.NM,x0,yy,G.w,P.midH*P.NM)}ctx.restore()}
+  ctx.drawImage(P.a,0,P.tp,P.ow,P.bp,x0,g-P.botH,G.w,P.botH);
+  ctx.drawImage(P.a,0,0,P.ow,P.tp,x0,y,G.w,P.topH)}
 function composeHouse(G,hgt){const k=G.c+G.i+"_"+Math.round(G.w)+"_"+Math.round(hgt/3);if(HCMP[k])return HCMP[k];
   const R=2,cv=G.cv,H0=G.H0,o=document.createElement("canvas");o.width=Math.round(G.w*R);o.height=Math.round(hgt*R);const c=o.getContext("2d");c.imageSmoothingQuality="high";
   const s=o.width/cv.width,ay=H0.a*cv.height,by=H0.b*cv.height,topH=ay*s,botH=(cv.height-by)*s,midH=(by-ay)*s,avail=o.height-topH-botH;

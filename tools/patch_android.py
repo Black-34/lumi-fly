@@ -46,6 +46,8 @@ def gradle(s):
     buildTypes {'''
     s = s.replace('    buildTypes {', sign, 1)
     s = re.sub(r'(buildTypes \{\s*release \{)', r'\1\n            if (System.getenv("LF_KEYSTORE")) { signingConfig signingConfigs.release }', s, count=1)
+    # test APK installs NEXT TO the Play Store version (own package name), so it can be tried without uploading
+    s = re.sub(r'(buildTypes \{)', r'\1\n        debug {\n            applicationIdSuffix ".dev"\n        }', s, count=1)
     return s
 edit(f'{A}/build.gradle', gradle)
 

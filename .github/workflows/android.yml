@@ -66,7 +66,7 @@ jobs:
       - name: Rename
         run: |
           mkdir -p out
-          cp android/app/build/outputs/apk/debug/app-debug.apk "out/LumiFly-test-${{ github.run_number }}.apk"
+          cp android/app/build/outputs/apk/debug/app-debug.apk "out/LumiFly-DEV-${{ github.run_number }}.apk"
           if [ -f android/app/build/outputs/bundle/release/app-release.aab ]; then cp android/app/build/outputs/bundle/release/app-release.aab "out/LumiFly-${{ github.run_number }}-${{ env.ADS }}.aab"; fi
       - uses: actions/upload-artifact@v6
         with:

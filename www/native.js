@@ -204,7 +204,7 @@
   } : null;
 
   window.Native = { lb: lb, buzz: buzz, ad: ad, store: nstore, price: price, privacy: privacy, terms: CFG.termsUrl, privacyUrl: CFG.privacyUrl, version: null };
-  try { App.getInfo().then(function (i) { window.Native.version = i.version + ' (' + i.build + ')' }).catch(function () {}) } catch (e) {}
+  try { App.getInfo().then(function (i) { window.Native.version = i.version + ' (' + i.build + ')'; if (/\.dev$/.test(i.id || '')) { window.Native.version += ' DEV'; try { localStorage.setItem('lf-fps', '1') } catch (e) {} try { if (typeof FPS !== 'undefined') FPS.on = true } catch (e) {} } }).catch(function () {}) } catch (e) {}
   document.addEventListener('deviceready', initStore, false);
   window.addEventListener('load', function () { setTimeout(initAds, 600) });
 })();
